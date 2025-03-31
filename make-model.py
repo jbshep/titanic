@@ -8,3 +8,12 @@ from sklearn.metrics import accuracy_score
 df = pd.read_csv('titanic.csv')
 
 print(df.head())
+
+categorical_features = ['Pclass', 'Sex', 'Embarked']
+target = 'Survived'
+
+# Drop people rows who have NA's for a categorical feature
+df = df[categorical_features + [target]].dropna()
+
+X = df[categorical_features]
+y = df[target]
