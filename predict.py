@@ -34,6 +34,24 @@ accuracy = accuracy_score(y_test, y_pred)
 
 print(f"Model Accuracy: {accuracy:.2f}")
 
-import joblib
-joblib.dump(model, 'model.pkl')
-print('Model saved to model.pkl')
+
+# Define a new passenger's details
+new_passenger = pd.DataFrame({
+    'Pclass': [3],      # Third class
+    'Sex': ['male'],     # Male
+    'Embarked': ['S']    # Embarked at Southampton
+})
+
+# Apply the same encoding transformation
+new_passenger_encoded = encoder.transform(new_passenger)
+
+# Convert to DataFrame to match training format
+new_passenger_encoded = pd.DataFrame(new_passenger_encoded, columns=encoder.get_feature_names_out(categorical_features))
+
+# Make a prediction
+prediction = model.predict(new_passenger_encoded)
+prediction_proba = model.predict_proba(new_passenger_encoded)
+
+# Display the result
+print(f"Predicted Survival: {'Survived' if prediction[0] == 1 else 'Did Not Survive'}")
+print(f"Prediction Probability: {prediction_proba[0]}")
